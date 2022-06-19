@@ -21,7 +21,7 @@ const BoxContainer = styled.div`
     color: #96f2d7;
   }
 `;
-
+const api_url = "https://openapi.naver.com/v1/vision/celebrity";
 const InputImageBox = () => {
   const [file, setFile] = useState(null);
   const imgInput = useRef("");
@@ -34,23 +34,19 @@ const InputImageBox = () => {
 
   // 파일 post
   const onClickImg = async (event) => {
-    let _formData = new FormData();
-    _formData.append("file", event.target.files[0]);
+    let form = new FormData();
+    console.log(event.target.files[0]);
+    form.append("image", event.target.files[0]);
 
-    for (const key of _formData) {
-      console.log(key);
-    }
-    /*
-    let api_url = "https://openapi.naver.com/v1/vision/celebrity";
-
-    const res = await axios.post(
-      api_url,
-      { formData: _formData },
-      { headers: { "X-Naver-Client-Id": ID, "X-Naver-Client-Secret": SECRET } }
-    );
+    const res = await axios.post(api_url, form, {
+      headers: {
+        ...form.getHeaders(),
+        "X-Naver-Client-Id": ID,
+        "X-Naver-Client-Secret": SECRET,
+      },
+    });
 
     console.log(res);
-    */
   };
 
   return (
