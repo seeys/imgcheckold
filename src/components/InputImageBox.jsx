@@ -24,18 +24,23 @@ const BoxContainer = styled.div`
 
 const InputImageBox = () => {
   const [file, setFile] = useState(null);
-  const selectFile = useRef("");
+  const imgInput = useRef("");
 
   // 파일 변경 감지 핸들러
-  const onChaneFile = () => {
-    selectFile.current.click();
+  const onChangeFile = (event) => {
+    event.preventDefault();
+    imgInput.current.click();
   };
 
   // 파일 post
-  const onClickImg = async () => {
+  const onClickImg = async (event) => {
     let _formData = new FormData();
+    _formData.append("file", event.target.files[0]);
 
-    _formData.append("test", "idx");
+    for (const key of _formData) {
+      console.log(key);
+    }
+    /*
     let api_url = "https://openapi.naver.com/v1/vision/celebrity";
 
     const res = await axios.post(
@@ -45,17 +50,19 @@ const InputImageBox = () => {
     );
 
     console.log(res);
+    */
   };
 
   return (
     <BoxContainer>
-      <BsPlusSquare
-        size="100"
-        onClick={onChaneFile}
-        className="test"
-        htmlFor="input_file"
+      <BsPlusSquare size="100" className="test" onClick={onChangeFile} />
+      <input
+        type="file"
+        style={{ display: "none" }}
+        id="input_file"
+        onChange={onClickImg}
+        ref={imgInput}
       />
-      <input type="file" style={{ display: "none" }} ref={selectFile} />
     </BoxContainer>
   );
 };
