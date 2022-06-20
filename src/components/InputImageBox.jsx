@@ -24,7 +24,7 @@ const BoxContainer = styled.div`
 const PreviewBox = styled.div`
   text-align: center;
 `;
-const api_url = "/celebrity";
+const api_url = "/v1/vision/celebrity";
 
 const InputImageBox = () => {
   const [file, setFile] = useState(null);
@@ -39,15 +39,15 @@ const InputImageBox = () => {
     const form = new FormData();
     form.append("image", img);
 
-    await axios({
-      method:'post',
-      url:api_url,
-      data:form,
-      headers:{
-        'Content-Type': 'multipart/form-data',
-        'X-Naver-Client-Id':ID,
-        'X-Naver-Client-Secret':SECRET
-      }
+    axios({
+      method: "post",
+      url: api_url,
+      data: form,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "X-Naver-Client-Id": ID,
+        "X-Naver-Client-Secret": SECRET,
+      },
     });
 
     return new Promise((res) => {
