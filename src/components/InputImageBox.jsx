@@ -3,7 +3,6 @@ import axios from "axios";
 import React from "react";
 import { useRef, useState } from "react";
 import { BsPlusSquare } from "react-icons/bs";
-import { ID, SECRET } from "../secret";
 
 const BoxContainer = styled.div`
   border: #087f5b solid 5px;
@@ -24,11 +23,27 @@ const BoxContainer = styled.div`
 const PreviewBox = styled.div`
   text-align: center;
 `;
-const api_url = "/v1/vision/celebrity";
 
 const InputImageBox = () => {
   const [file, setFile] = useState(null);
+  const [result, setResult] = useState("");
   const imgInput = useRef("");
+
+  // API로 데이터를 받아오는 함수
+  const fetchData = async (form) => {
+    try {
+      // '/api/search'로 서버에 요청
+      const { data } = await axios.get("/face", {
+        formData: form,
+      });
+
+      setResult(data);
+    } catch (error) {
+      let message = "Unknown Error";
+      if (error instanceof Error) message = error.message;
+      console.log(message);
+    }
+  };
 
   // 파일 변경 감지 핸들러
   const onClickFile = (event) => {
@@ -38,18 +53,8 @@ const InputImageBox = () => {
     reader.readAsDataURL(img);
     const form = new FormData();
     form.append("image", img);
-
-    axios({
-      method: "post",
-      url: api_url,
-      data: form,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        "X-Naver-Client-Id": ID,
-        "X-Naver-Client-Secret": SECRET,
-      },
-    });
-
+    fetchData(form);
+    console.log(result);
     return new Promise((res) => {
       reader.onload = () => {
         setFile(reader.result);
