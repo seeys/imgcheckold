@@ -1,8 +1,7 @@
 import styled from "@emotion/styled";
 import axios from "axios";
 import React from "react";
-import { useRef } from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { BsPlusSquare } from "react-icons/bs";
 import { ID, SECRET } from "../secret";
 
@@ -21,45 +20,62 @@ const BoxContainer = styled.div`
     color: #96f2d7;
   }
 `;
-const api_url = "https://openapi.naver.com/v1/vision/celebrity";
+
+const PreviewBox = styled.div`
+  text-align: center;
+`;
+const api_url = "/celebrity";
+
 const InputImageBox = () => {
   const [file, setFile] = useState(null);
   const imgInput = useRef("");
 
   // 파일 변경 감지 핸들러
-  const onChangeFile = (event) => {
+  const onClickFile = (event) => {
     event.preventDefault();
-    imgInput.current.click();
-  };
+    const img = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(img);
+    const form = new FormData();
+    form.append("image", img);
 
-  // 파일 post
-  const onClickImg = async (event) => {
-    let form = new FormData();
-    console.log(event.target.files[0]);
-    form.append("image", event.target.files[0]);
-
-    const res = await axios.post(api_url, form, {
-      headers: {
-        ...form.getHeaders(),
-        "X-Naver-Client-Id": ID,
-        "X-Naver-Client-Secret": SECRET,
-      },
+    await axios({
+      method:'post',
+      url:api_url,
+      data:form,
+      headers:{
+        'Content-Type': 'multipart/form-data',
+        'X-Naver-Client-Id':ID,
+        'X-Naver-Client-Secret':SECRET
+      }
     });
 
-    console.log(res);
+    return new Promise((res) => {
+      reader.onload = () => {
+        setFile(reader.result);
+        res();
+      };
+    });
   };
 
   return (
-    <BoxContainer>
-      <BsPlusSquare size="100" className="test" onClick={onChangeFile} />
-      <input
-        type="file"
-        style={{ display: "none" }}
-        id="input_file"
-        onChange={onClickImg}
-        ref={imgInput}
-      />
-    </BoxContainer>
+    <>
+      <BoxContainer>
+        <label htmlFor="input_file">
+          <BsPlusSquare size="100" className="test" />
+          <input
+            type="file"
+            style={{ display: "none" }}
+            id="input_file"
+            onChange={onClickFile}
+            ref={imgInput}
+          />
+        </label>
+      </BoxContainer>
+      <PreviewBox>
+        {file && <img src={file} alt="preview" width="200" height="200" />}
+      </PreviewBox>
+    </>
   );
 };
 
