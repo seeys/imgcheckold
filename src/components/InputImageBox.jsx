@@ -15,7 +15,7 @@ const BoxContainer = styled.div`
 const InsertBtn = styled.div`
   border: #087f5b solid 5px;
   border-radius: 30px;
-  font-size: 40px;
+  font-size: 50px;
   padding: 10px;
 
   &:hover {
@@ -26,7 +26,9 @@ const InsertBtn = styled.div`
 `;
 
 const PreviewBox = styled.div`
+  margin-top: 20px;
   text-align: center;
+  font-size: 20px;
 `;
 
 function InputImageBox() {
