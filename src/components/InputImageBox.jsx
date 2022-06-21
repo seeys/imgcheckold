@@ -2,10 +2,9 @@ import styled from "@emotion/styled";
 import React from "react";
 
 const BoxContainer = styled.div`
-  border: #087f5b solid 5px;
   border-radius: 15px;
-  width: 20vw;
-  height: 20vw;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,11 +15,13 @@ const BoxContainer = styled.div`
 const InsertBtn = styled.div`
   border: #087f5b solid 5px;
   border-radius: 30px;
-  font-size: 20px;
+  font-size: 40px;
   padding: 10px;
 
   &:hover {
-    color: red;
+    color: white;
+    border: #38d9a9 solid 5px;
+    background-color: #38d9a9;
   }
 `;
 
