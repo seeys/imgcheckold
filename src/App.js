@@ -1,3 +1,4 @@
+import "./App.css";
 import Header from "./components/Header";
 import InputImageBox from "./components/InputImageBox";
 
