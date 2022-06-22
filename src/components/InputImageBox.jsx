@@ -49,9 +49,6 @@ const BtnMbti = styled.div`
   }
 `;
 
-const url = "https://kapi.kakao.com/v1/vision/face/detect";
-const api_key = "5e262de3c0c1e6f16fcba5f8f69e7146";
-
 function InputImageBox() {
   const [imgSrc, setImgsrc] = useState("");
   const [files, setFiles] = useState("");
@@ -73,14 +70,7 @@ function InputImageBox() {
     formData.append("image", files);
     console.log(files);
 
-    const headers = {
-      Headers: {
-        "Content-type": "multipart/form-data",
-        Authorization: `KakaoAK ${api_key}`,
-      },
-    };
-
-    await axios.post(url, formData, headers).then((res) => console.log(res));
+    await axios.get("/api/img").then((res) => console.log(res));
   };
 
   return (
