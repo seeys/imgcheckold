@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
-import React from "react";
+import { Button } from "@mui/material";
+import axios from "axios";
+import React, { useState } from "react";
 
 const BoxContainer = styled.div`
   border-radius: 15px;
@@ -31,18 +33,61 @@ const PreviewBox = styled.div`
   font-size: 20px;
 `;
 
+const BtnMbti = styled.div`
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 50px;
+  font-size: 30px;
+  border: #087f5b solid 5px;
+  border-radius: 30px;
+  width: 200px;
+
+  &:hover {
+    color: white;
+    border: #38d9a9 solid 5px;
+    background-color: #38d9a9;
+  }
+`;
+
+const url = "https://kapi.kakao.com/v1/vision/face/detect";
+const api_key = "5e262de3c0c1e6f16fcba5f8f69e7146";
+
 function InputImageBox() {
-  // 파일 보내기
+  const [imgSrc, setImgsrc] = useState("");
+  const [files, setFiles] = useState("");
+  // 파일 선택하기
   const onClickFile = (e) => {
-    console.log("hi");
-    console.log(e.target.files[0]);
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    setFiles(e.target.files[0]);
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImgsrc(reader.result);
+        resolve();
+      };
+    });
+  };
+
+  const handleImgMbti = async (e) => {
+    const formData = new FormData();
+    formData.append("image", files);
+    console.log(files);
+
+    const headers = {
+      Headers: {
+        "Content-type": "multipart/form-data",
+        Authorization: `KakaoAK ${api_key}`,
+      },
+    };
+
+    await axios.post(url, formData, headers).then((res) => console.log(res));
   };
 
   return (
     <>
       <BoxContainer>
         <label htmlFor="input_file">
-          <InsertBtn>insert</InsertBtn>
+          <InsertBtn>사진 선택하기</InsertBtn>
         </label>
         <input
           type="file"
@@ -51,7 +96,10 @@ function InputImageBox() {
           onChange={onClickFile}
         />
       </BoxContainer>
-      <PreviewBox>미리보기</PreviewBox>
+      <PreviewBox>
+        {imgSrc && <img src={imgSrc} alt="preview" width="300" height="300" />}
+      </PreviewBox>
+      <BtnMbti onClick={handleImgMbti}>MBTI 분석 하기</BtnMbti>
     </>
   );
 }
