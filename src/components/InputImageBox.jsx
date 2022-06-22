@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { Button } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 
@@ -70,7 +69,7 @@ function InputImageBox() {
     formData.append("image", files);
     console.log(files);
 
-    await axios.get("/api/img").then((res) => console.log(res));
+    await axios.post("/api/img", formData).then((res) => console.log(res));
   };
 
   return (
