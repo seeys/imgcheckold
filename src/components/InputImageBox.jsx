@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import axios from "axios";
 import React, { useState } from "react";
+import ResultImage from "./ResultImage";
 
 const BoxContainer = styled.div`
   border-radius: 15px;
@@ -51,6 +52,7 @@ const BtnMbti = styled.div`
 function InputImageBox() {
   const [imgSrc, setImgsrc] = useState("");
   const [files, setFiles] = useState("");
+  const [result, setResults] = useState("");
   // 파일 선택하기
   const onClickFile = (e) => {
     const reader = new FileReader();
@@ -67,8 +69,10 @@ function InputImageBox() {
   const handleImgMbti = async (e) => {
     const formData = new FormData();
     formData.append("image", files);
-
-    await axios.post("/api/img", formData).then((res) => console.log(res));
+    await axios.post("/api/img", formData).then((res) => {
+      console.log(res);
+      setResults(res);
+    });
   };
 
   return (
@@ -88,6 +92,7 @@ function InputImageBox() {
         {imgSrc && <img src={imgSrc} alt="preview" width="300" height="300" />}
       </PreviewBox>
       <BtnMbti onClick={handleImgMbti}>MBTI 분석 하기</BtnMbti>
+      <ResultImage />
     </>
   );
 }
