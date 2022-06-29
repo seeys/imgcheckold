@@ -52,7 +52,7 @@ const BtnMbti = styled.div`
 function InputImageBox() {
   const [imgSrc, setImgsrc] = useState("");
   const [files, setFiles] = useState("");
-
+  const [imgResult, setimgResult] = useState(null);
   // 파일 선택하기
   const onClickFile = (e) => {
     const reader = new FileReader();
@@ -70,7 +70,8 @@ function InputImageBox() {
     const formData = new FormData();
     formData.append("image", files);
     await axios.post("/api/img", formData).then((res) => {
-      console.log(res);
+      setimgResult(res.data.faces[0].landmark);
+      console.log(imgResult);
     });
   };
 
@@ -91,7 +92,7 @@ function InputImageBox() {
         {imgSrc && <img src={imgSrc} alt="preview" width="300" height="300" />}
       </PreviewBox>
       <BtnMbti onClick={handleImgMbti}>MBTI 분석 하기</BtnMbti>
-      <ResultImage />
+      <ResultImage data={imgResult} />
     </>
   );
 }

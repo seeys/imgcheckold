@@ -13,7 +13,9 @@ const ResultBox = styled.div`
   text-align: center;
 `;
 
-function ResultImage() {
+function ResultImage({ data }) {
+  // mbti 계산 핸들러
+
   return <ResultBox>ENTJ</ResultBox>;
 }
 
