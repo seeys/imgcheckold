@@ -52,7 +52,7 @@ const BtnMbti = styled.div`
 function InputImageBox() {
   const [imgSrc, setImgsrc] = useState("");
   const [files, setFiles] = useState("");
-  const [result, setResults] = useState("");
+
   // 파일 선택하기
   const onClickFile = (e) => {
     const reader = new FileReader();
@@ -71,7 +71,6 @@ function InputImageBox() {
     formData.append("image", files);
     await axios.post("/api/img", formData).then((res) => {
       console.log(res);
-      setResults(res);
     });
   };
 
