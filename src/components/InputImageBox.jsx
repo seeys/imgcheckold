@@ -67,7 +67,6 @@ function InputImageBox() {
   const handleImgMbti = async (e) => {
     const formData = new FormData();
     formData.append("image", files);
-    console.log(files);
 
     await axios.post("/api/img", formData).then((res) => console.log(res));
   };
