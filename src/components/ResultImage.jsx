@@ -15,8 +15,7 @@ const ResultBox = styled.div`
 
 function ResultImage({ data }) {
   // mbti 계산 핸들러
-
-  return <ResultBox>ENTJ</ResultBox>;
+  return <ResultBox>{data}</ResultBox>;
 }
 
 export default ResultImage;

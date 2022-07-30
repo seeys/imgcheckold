@@ -53,6 +53,7 @@ function InputImageBox() {
   const [imgSrc, setImgsrc] = useState("");
   const [files, setFiles] = useState("");
   const [imgResult, setimgResult] = useState(null);
+  const [load, setLoad] = useState(false);
   // 파일 선택하기
   const onClickFile = (e) => {
     const reader = new FileReader();
@@ -66,12 +67,15 @@ function InputImageBox() {
     });
   };
 
-  const handleImgMbti = async (e) => {
+  const handleImg = async (e) => {
     const formData = new FormData();
     formData.append("image", files);
     await axios.post("/api/img", formData).then((res) => {
-      setimgResult(res.data.faces[0].landmark);
-      console.log(imgResult);
+      //console.log(res);
+      //console.log(res.data.faces[0].celebrity.value);
+      setimgResult(res.data.faces[0].celebrity.value);
+      //console.log(imgResult);
+      setLoad(true);
     });
   };
 
@@ -91,8 +95,8 @@ function InputImageBox() {
       <PreviewBox>
         {imgSrc && <img src={imgSrc} alt="preview" width="300" height="300" />}
       </PreviewBox>
-      <BtnMbti onClick={handleImgMbti}>MBTI 분석 하기</BtnMbti>
-      <ResultImage data={imgResult} />
+      <BtnMbti onClick={handleImg}>닮은꼴 분석 하기</BtnMbti>
+      {load ? <ResultImage data={imgResult} /> : null}
     </>
   );
 }
